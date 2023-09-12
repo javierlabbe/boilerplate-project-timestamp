@@ -16,7 +16,7 @@ routerDate.get('/api/:date', (req, res) => {
         }
     
         if (isNaN(fecha)) {
-            throw new Error("Error en la fecha ingresada");
+            throw new Error("Invalid Date");
         }
     
         const opFecha = { diaSemana: {weekday: 'short'}, año: {year: 'numeric'}, mes: {month: 'short'}};
