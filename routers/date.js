@@ -2,19 +2,18 @@ const express = require('express');
 
 const routerDate = express.Router();
 
-routerDate.get('/api/', (req, res) => {
-  console.log("dentro de api"+new Date())
+routerDate.get('/', (req, res) => {
   res.redirect('/api/'+new Date())
 })
 
-routerDate.get('/api/:date', (req, res) => {
+routerDate.get('/:date', (req, res) => {
     let fechaUrl = req.params.date;
     let resp;
   
     try {
         let fecha;
         
--       if (/^\d{13}$/.test(fechaUrl)){
+       if (/^\d{13}$/.test(fechaUrl)){
           fecha = new Date(parseInt(fechaUrl));
         } else {
           fecha = new Date(fechaUrl)
@@ -34,11 +33,9 @@ routerDate.get('/api/:date', (req, res) => {
         const unixFecha = fecha.getTime();
         const utcFecha = `${diaSem}, ${dia} ${mes} ${año} ${hora}`;
     
-        console.log(`"unix": ${unixFecha}, "utc": "${utcFecha} GMT"`);
         resObj = {unix: unixFecha, utc: utcFecha + " GMT"}
       
     } catch (error) {
-        console.error(error.message);
         resObj = {error: error.message};
     }
   
