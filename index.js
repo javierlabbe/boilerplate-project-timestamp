@@ -22,7 +22,7 @@ app.get("/", function (req, res) {
 // your first API endpoint... 
 const routerDate = require(__dirname+'/routers/date.js')
 
-app.use('/', routerDate);
+app.use('/api', routerDate);
 
 // listen for requests :)
 const PORT = process.env.PORT;
