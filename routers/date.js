@@ -2,6 +2,11 @@ const express = require('express');
 
 const routerDate = express.Router();
 
+routerDate.get('/api/', (req, res) => {
+  console.log("dentro de api"+new Date())
+  res.redirect('/api/'+new Date())
+})
+
 routerDate.get('/api/:date', (req, res) => {
     let fechaUrl = req.params.date;
     let resp;
@@ -9,12 +14,12 @@ routerDate.get('/api/:date', (req, res) => {
     try {
         let fecha;
         
-        if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(fechaUrl)) {
-            fecha = new Date(fechaUrl + " 00:00:00");
-        } else if (/^\d{13}$/.test(fechaUrl)){
-            fecha = new Date(parseInt(fechaUrl));
+-       if (/^\d{13}$/.test(fechaUrl)){
+          fecha = new Date(parseInt(fechaUrl));
+        } else {
+          fecha = new Date(fechaUrl)
         }
-    
+      
         if (isNaN(fecha)) {
             throw new Error("Invalid Date");
         }
@@ -22,15 +27,15 @@ routerDate.get('/api/:date', (req, res) => {
         const opFecha = { diaSemana: {weekday: 'short'}, año: {year: 'numeric'}, mes: {month: 'short'}};
         const diaSem = fecha.toLocaleDateString('en', opFecha.diaSemana); 
         const mes = fecha.toLocaleDateString('en', {month: 'short'}); 
-        const dia = fecha.getUTCDate();
+        const dia = fecha.getUTCDate().toString().padStart(2, '0');
         const año = fecha.toLocaleDateString('en', opFecha.año);
         let hora = fecha.toLocaleTimeString(undefined, {hour12: false});
         hora = hora.replace(/^24:/, '00:');
         const unixFecha = fecha.getTime();
         const utcFecha = `${diaSem}, ${dia} ${mes} ${año} ${hora}`;
     
-        console.log(`"unix": ${unixFecha}, "utc": "${utcFecha} GTM"`);
-        resObj = {unix: unixFecha, utc: utcFecha + " GTM"}
+        console.log(`"unix": ${unixFecha}, "utc": "${utcFecha} GMT"`);
+        resObj = {unix: unixFecha, utc: utcFecha + " GMT"}
       
     } catch (error) {
         console.error(error.message);
